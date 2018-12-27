@@ -13,77 +13,79 @@ import java.awt.event.*;
  *
  * @author badLagger
  */
-public class PaintApp extends Applet implements MouseListener{
-    
-    
-    
-    class ViewString{
-        
-        final   String  title;
-        final   int     x, y;
-        private int     count;
-        private int     updt;
-        
-        ViewString(String title, int x, int y){
-            this.title = title;
-            this.x = x;
-            this.y = y;
-            count = 0;
-            updt  = 0;
-        }
-        
-        public void draw(Graphics view){
-            //if(updt == 1){
-                view.drawString(title + count, x, y);
-                 updt = 0;
-           // }
-        }
-        
-        public void update(){
-            count++;
-            updt = 1;
-        } 
-    }
-    
-    ViewString mPressed;
+public class PaintApp extends Applet implements MouseListener, MouseMotionListener{
     String     status;
+    int        xBgn, yBgn, xCur, yCur;
+    boolean    drawing = false;
+    Color      colorCur;
     
     @Override
     public void init() {
-      status = "Инициализация";
+      status = "Инициализация ";
+      addMouseListener(this);
+      addMouseMotionListener(this);
+      repaint();
     }
     @Override 
     public void start(){
-      mPressed = new ViewString("Событие нажатия: ", 100, 100);
-      mPressed.update();
-      status = "Старт";
+      status = "Старт ";
+      xBgn = yBgn = xCur = yCur = 0;
+      colorCur = Color.BLACK;
       repaint();
     }
     
     @Override
     public void paint(Graphics view){
-        mPressed.draw(view);
+        if(drawing){
+            view.setColor(colorCur);
+            view.drawLine(xBgn, yBgn, xCur, yCur);
+        }
         showStatus(status);
     }
-    // Runnable method overriding
     @Override
     public void mousePressed(MouseEvent me){
-    
-    }
-    @Override
-    public void mouseEntered(MouseEvent me){
-    
-    }
-    @Override
-    public void mouseExited(MouseEvent me){
-    
+        if(me.getButton() == MouseEvent.BUTTON1)
+        {
+          drawing = true;
+          xBgn = xCur = me.getX();
+          yBgn = yCur = me.getY();
+        }
+        
+        if(me.getButton() == MouseEvent.BUTTON3)
+        {
+            if(colorCur == Color.BLACK)
+                colorCur = Color.BLUE;
+            else if(colorCur == Color.BLUE){
+                colorCur = Color.GREEN;
+            }else if(colorCur == Color.GREEN){
+                colorCur = Color.ORANGE;
+            } else colorCur = Color.BLACK;
+        }
+        status = "Рисуем ";
+        repaint();
     }
     @Override
     public void mouseReleased(MouseEvent me){
-    
+       if(me.getButton() == MouseEvent.BUTTON1)
+       {
+         status = "Ждём ";
+         drawing = false;
+       } 
+       repaint();
     }
     @Override
-    public void mouseClicked(MouseEvent me){
-    
+    public void mouseDragged(MouseEvent me){
+        xCur = me.getX();
+        yCur = me.getY();
+        status = "Рисуем ";
+        repaint();
     }
+    @Override
+    public void mouseEntered(MouseEvent me){}
+    @Override
+    public void mouseExited(MouseEvent me){}
+    @Override
+    public void mouseClicked(MouseEvent me){}
+    @Override
+    public void mouseMoved(MouseEvent me){}
 }
