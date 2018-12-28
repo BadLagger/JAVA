@@ -13,11 +13,12 @@ import java.io.*;
  *
  * @author Vladimir Hrechko
  */
-public class SwingCmp implements ActionListener {
+public class SwingCmp implements ActionListener, ItemListener{
     
     JTextField FirstTxt, SecondTxt;
     JLabel     FistLbl,  SecondLbl, ResultLbl;
     JButton    Btn;
+    JCheckBox  checkShow;
     
     SwingCmp(){
         JFrame mainFrame = new JFrame("Сравнение файлов");
@@ -37,6 +38,10 @@ public class SwingCmp implements ActionListener {
         SecondLbl = new JLabel("Second file: ");
         ResultLbl = new JLabel("");
         
+        checkShow = new JCheckBox("Показать первое расхождение");
+        checkShow.addItemListener(this);
+        
+        mainFrame.add(checkShow);
         mainFrame.add(FistLbl);
         mainFrame.add(FirstTxt);
         mainFrame.add(SecondLbl);
@@ -49,6 +54,7 @@ public class SwingCmp implements ActionListener {
     
     public void actionPerformed(ActionEvent ae){
         int i =0, j = 0;
+        int count = 0;
         
         if(FirstTxt.getText().equals("")){
             ResultLbl.setText("Не указан путь к первому файлу");
@@ -62,18 +68,27 @@ public class SwingCmp implements ActionListener {
         try(FileInputStream f1 = new FileInputStream(FirstTxt.getText());
             FileInputStream f2 = new FileInputStream(SecondTxt.getText())){
             do{
+                count++;
                 i = f1.read();
                 j = f2.read();
                 if(i != j) break;
             }while(i != -1 && j != -1);
             if(i != j)
-                ResultLbl.setText("Файлы разные");
+            {
+                
+                if(checkShow.getSelectedObjects() != null)
+                    ResultLbl.setText("Файлы разные. Первое расхождение в " + count);
+                else
+                    ResultLbl.setText("Файлы разные.");
+            }
             else
                 ResultLbl.setText("Файлы одинаковые");
         }catch(IOException exc){
             ResultLbl.setText("Ошибка открытия файла");
         }
     }
+    
+    public void itemStateChanged(ItemEvent id){}
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable(){
