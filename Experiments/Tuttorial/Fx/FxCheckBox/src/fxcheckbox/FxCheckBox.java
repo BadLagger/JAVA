@@ -61,7 +61,7 @@ public class FxCheckBox extends Application implements EventHandler{
             if(cbSmartphone.isIndeterminate())
             {
                 response.setText("Смартфон в третьем состоянии");
-                showAll();
+                //showAll();
             } else handle(e);
         });
         
