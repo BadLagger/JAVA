@@ -37,6 +37,7 @@ public class FxCheckBox extends Application implements EventHandler{
         launch();
     }
     
+    @Override
     public void start(Stage stg){
         stg.setTitle("Демонстрация FxCheckBox");
         
@@ -54,7 +55,16 @@ public class FxCheckBox extends Application implements EventHandler{
         cbTablet = new CheckBox("Планшет");
         cbNotebook = new CheckBox("Ноутбук");
         cbDescktop = new CheckBox("ПК");
-        cbSmartphone.setOnAction(this);
+        
+        cbSmartphone.setAllowIndeterminate(true); // third state
+        cbSmartphone.setOnAction((ActionEvent e) ->{
+            if(cbSmartphone.isIndeterminate())
+            {
+                response.setText("Смартфон в третьем состоянии");
+                showAll();
+            } else handle(e);
+        });
+        
         cbTablet.setOnAction(this);
         cbNotebook.setOnAction(this);
         cbDescktop.setOnAction(this);
@@ -64,6 +74,7 @@ public class FxCheckBox extends Application implements EventHandler{
         showAll();
     }
     
+    @Override
     public void handle(Event e){
         CheckBox cb = (CheckBox)e.getSource();
         if(cb.isSelected())
