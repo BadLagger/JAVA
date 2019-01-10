@@ -15,24 +15,43 @@ public class FxCssChecker extends Application{
 	/* MainFrame parameters */
 	private int width  = 640,
 				height = 480;
+				
 	private int nextElementX = 10,
 				nextElementY = 30;
 	/* GUI elements */
 	private MenuBar mBar;
+	
 	private Menu    mFile,
 					mEdit,
 					mView,
 					mAbout;
+					
 	private MenuItem mFileNew,
 					 mFileOpen,
 					 mFileClose,
 					 mFileExit;
+					 
+	private SeparatorMenuItem 	mFileSep1, 
+								mFileSep2;
+								
 	private Alert    aAbout;
-	private Label    lAbout;
+	
+	private Label    lAbout,
+					 lEdit;
+					 
 	private CheckMenuItem 	mViewButton,
 							mViewLabel,
-							mViewText;
-	private Button  mfBtn;
+							mViewText,
+							mViewCheckbox,
+							mViewRadiobtn;
+							
+	private Button      mfBtn;
+	private Label       mfLabel;
+	private TextField   mfText;
+	private CheckBox    mfChbox;
+	
+	private RadioButton mfRadiobtn1,
+						mfRadiobtn2;
 	/* Launch app */
 	public static void main(String[] args){ launch(); }
 	/* Start app*/
@@ -54,42 +73,105 @@ public class FxCssChecker extends Application{
 		mBar.setPrefWidth(width + 10);  // !!! No SPIKE should be here
 		/* MenuBar elements*/
 		mFile = new Menu("File");
-		mEdit = new Menu("Edit");
+		mEdit = new Menu();
 		mView = new Menu("View");
 		mAbout = new Menu();
 		/* Menu File */
 		mFileNew = new MenuItem("New");
+		mFileSep1 = new SeparatorMenuItem();
+		mFileSep2 = new SeparatorMenuItem();
 		mFileOpen = new MenuItem("Open");
 		mFileClose = new MenuItem("Close");
 		mFileExit = new MenuItem("Exit");
-		mFile.getItems().addAll(mFileNew, mFileOpen, mFileClose, mFileExit);
+		mFile.getItems().addAll(mFileNew, mFileSep1, mFileOpen, mFileClose, mFileSep2, mFileExit);
 		/* Menu Edit */
+		lEdit = new Label("Edit");
+		lEdit.setOnMouseClicked((MouseEvent eId) ->{
+			System.out.println("Edit");
+		});
+		mEdit.setGraphic(lEdit);
 		/* Menu View */
 		mViewButton = new CheckMenuItem("Button");
 		mViewButton.setOnAction((ActionEvent e) ->{
 			if(mViewButton.isSelected()){
-				mfBtn.relocate(nextElementX, nextElementY); 
 				mfBtn.setVisible(true);
 			} else {
 				mfBtn.setVisible(false);
 			}
 		});
 		mViewLabel = new CheckMenuItem("Label");
+		mViewLabel.setOnAction((ActionEvent e) ->{
+			if(mViewLabel.isSelected()){
+				mfLabel.setVisible(true);
+			} else {
+				mfLabel.setVisible(false);
+			}
+		});
 		mViewText = new CheckMenuItem("Text");
-		mView.getItems().addAll(mViewButton, mViewLabel, mViewText);
+		mViewText.setOnAction((ActionEvent e) ->{
+			if(mViewText.isSelected()){
+				mfText.setVisible(true);
+			} else {
+				mfText.setVisible(false);
+			}
+		});
+		mViewCheckbox = new CheckMenuItem("Checkbox");
+		mViewCheckbox.setOnAction((ActionEvent e) ->{
+			if(mViewCheckbox.isSelected()){
+				mfChbox.setVisible(true);
+			} else {
+				mfChbox.setVisible(false);
+			}
+		});
+		mViewRadiobtn = new CheckMenuItem("Radio button");
+		mViewRadiobtn.setOnAction((ActionEvent e) ->{
+			if(mViewRadiobtn.isSelected()){
+				mfRadiobtn1.setVisible(true);
+				mfRadiobtn2.setVisible(true);
+			} else {
+				mfRadiobtn1.setVisible(false);
+				mfRadiobtn2.setVisible(false);
+			}
+		});
+		mView.getItems().addAll(mViewButton, mViewLabel, mViewText, mViewCheckbox, mViewRadiobtn);
 		/* Menu About */
 		lAbout = new Label("About");
-		lAbout.setOnMouseClicked((MouseEvent eId) -> {
+		lAbout.setOnMouseClicked((MouseEvent eId) ->{
 			if(eId.getButton() == MouseButton.PRIMARY)
 				aAbout.show();
 		});
 		mAbout.setGraphic(lAbout);
 		mBar.getMenus().addAll(mFile, mEdit, mView, mAbout);
 		/* Buttons */
-		mfBtn = new Button("Check");
+		mfBtn = new Button("Check button");
+		mfBtn.relocate(20, 120); 
 		mfBtn.setVisible(false);
+		/* Labels */
+		mfLabel = new Label("Check label");
+		mfLabel.relocate(20, 80); 
+		mfLabel.setVisible(false);
+		/* Texts */
+		mfText = new TextField();
+		mfText.setPrefSize(50, 15);
+		mfText.relocate(100, 80); 
+		mfText.setVisible(false);
+		/* Checkboxes */
+		mfChbox = new CheckBox("Check checkbox");
+		mfChbox.setAllowIndeterminate(true);
+		mfChbox.relocate(20, 50); 
+		mfChbox.setVisible(false);
+		/* Radiobuttons */
+		ToggleGroup group = new ToggleGroup();
+		mfRadiobtn1 = new RadioButton("Check radiobutton 1");
+		mfRadiobtn1.relocate(200, 50); 
+		mfRadiobtn1.setVisible(false);
+		mfRadiobtn1.setToggleGroup(group);
+		mfRadiobtn2 = new RadioButton("Check radiobutton 2");
+		mfRadiobtn2.relocate(200, 80); 
+		mfRadiobtn2.setVisible(false);
+		mfRadiobtn2.setToggleGroup(group);
 		/* End of GUI creation */
-		((Pane)scn.getRoot()).getChildren().addAll(mBar, mfBtn);
+		((Pane)scn.getRoot()).getChildren().addAll(mBar, mfBtn, mfLabel, mfText, mfChbox, mfRadiobtn1, mfRadiobtn2);
 		stg.setScene(scn);
 		stg.show();
 	}
