@@ -7,6 +7,8 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.event.*;
+import java.io.*;
+
 
 public class FxCssChecker extends Application{
 	/* Title & version */
@@ -24,12 +26,14 @@ public class FxCssChecker extends Application{
 	private Menu    mFile,
 					mEdit,
 					mView,
+					mStyles,
 					mAbout;
 					
 	private MenuItem mFileNew,
 					 mFileOpen,
 					 mFileClose,
 					 mFileExit;
+	private CheckMenuItem[] mStylesItems;
 					 
 	private SeparatorMenuItem 	mFileSep1, 
 								mFileSep2;
@@ -52,6 +56,7 @@ public class FxCssChecker extends Application{
 	
 	private RadioButton mfRadiobtn1,
 						mfRadiobtn2;
+	private Scene scn;
 	/* Launch app */
 	public static void main(String[] args){ launch(); }
 	/* Start app*/
@@ -61,8 +66,7 @@ public class FxCssChecker extends Application{
 		stg.setTitle(Title + version);
 		stg.setResizable(false);
 		
-		Scene scn = new Scene(new Pane(), width, height);
-		
+		scn = new Scene(new Pane(), width, height);
 		/* Alerts (MSGBOX'S)*/
 		aAbout = new Alert(Alert.AlertType.NONE, Title + version, ButtonType.OK);
 		aAbout.setTitle("About");
@@ -75,6 +79,7 @@ public class FxCssChecker extends Application{
 		mFile = new Menu("File");
 		mEdit = new Menu();
 		mView = new Menu("View");
+		mStyles  = new Menu("Styles");
 		mAbout = new Menu();
 		/* Menu File */
 		mFileNew = new MenuItem("New");
@@ -134,6 +139,15 @@ public class FxCssChecker extends Application{
 			}
 		});
 		mView.getItems().addAll(mViewButton, mViewLabel, mViewText, mViewCheckbox, mViewRadiobtn);
+		/* Menu Styles*/
+		File rootDir = new File(".\\styles");
+		String[] strs = rootDir.list();
+		mStylesItems = new CheckMenuItem[strs.length];
+		for(int i = 0; i < strs.length; i++){
+			mStylesItems[i] = new CheckMenuItem(strs[i]);
+	        mStylesItems[i].setOnAction((ActionEvent e) -> StyleHndl(e));
+			mStyles.getItems().add(mStylesItems[i]);
+		}
 		/* Menu About */
 		lAbout = new Label("About");
 		lAbout.setOnMouseClicked((MouseEvent eId) ->{
@@ -141,7 +155,7 @@ public class FxCssChecker extends Application{
 				aAbout.show();
 		});
 		mAbout.setGraphic(lAbout);
-		mBar.getMenus().addAll(mFile, mEdit, mView, mAbout);
+		mBar.getMenus().addAll(mFile, mEdit, mView, mStyles, mAbout);
 		/* Buttons */
 		mfBtn = new Button("Check button");
 		mfBtn.relocate(20, 120); 
@@ -174,5 +188,16 @@ public class FxCssChecker extends Application{
 		((Pane)scn.getRoot()).getChildren().addAll(mBar, mfBtn, mfLabel, mfText, mfChbox, mfRadiobtn1, mfRadiobtn2);
 		stg.setScene(scn);
 		stg.show();
+	}
+	
+	public void StyleHndl(ActionEvent eId){
+		//ObservableList<String> styles;
+		//File currentPath = new File("");
+		CheckMenuItem menu = (CheckMenuItem)eId.getSource();
+		//System.out.println(menu.getText() + " " + currentPath.getAbsolutePath());
+		//scn.getStylesheets().add(getClass().getResource(currentPath.getAbsolutePath() + "\\styles\\" + menu.getText()).toExternalForm());
+		//mBar.getStyleClass().add("menu-bar");
+		if(menu.isSelected()) scn.getStylesheets().add(menu.getText());
+		else scn.getStylesheets().remove(menu.getText());
 	}
 }
