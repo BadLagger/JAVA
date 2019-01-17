@@ -1,0 +1,13 @@
+<project name="FxBox">
+	<description>
+		Box of view elements for work with JavaFX  
+	</description>
+	
+	<target name="clean" description="clean up">
+		<delete>
+			<fileset dir=".">
+				<include name="*.class"/>
+			</fileset>
+		</delete>
+	</target>
+</project>

@@ -1,0 +1,16 @@
+<project name="FxBox" default="build">
+
+	<property name="src" location="src\fxbox"/>
+	<property name="classes" location="classes"/>
+	
+	<target name="build">
+		<javac srcdir="${src}" destdir = "${classes}"/>
+	</target>
+	
+	<target name="run">
+		<java classname="fxbox.FxBoxDbg" fork="true">
+			<classpath path="${classes}"/>
+		</java>
+	</target>
+	
+</project>
