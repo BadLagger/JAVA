@@ -4,13 +4,21 @@
 	<property name="classes" location="classes"/>
 	
 	<target name="build">
-		<javac srcdir="${src}" destdir = "${classes}"/>
+		<javac srcdir="${src}" destdir = "${classes}" includes="FxBoxButtons.java,FxBoxUtil.java,FxBoxDbg.java,FxBoxContextMenus.java,FxBoxMenuItems.java"/>
 	</target>
 	
 	<target name="run">
 		<java classname="fxbox.FxBoxDbg" fork="true">
 			<classpath path="${classes}"/>
 		</java>
+	</target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${classes}\fxbox">
+				<include name="*.class"/>
+			</fileset>
+		</delete>
 	</target>
 	
 </project>
