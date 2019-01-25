@@ -1,0 +1,32 @@
+<project name="ZyEl" default="build">
+
+	<property name="enums" location="src\zyel\enums"/>
+	<property name="dbg" location="src\zyel\dbg"/>
+	<property name="sys" location="src\zyel\sys"/>
+	<property name="classes" location="classes"/>
+	
+	<target name="build">
+	    <javac includeantruntime="false" srcdir="${enums}" destdir = "${classes}" encoding="utf-8" includes="ZYELClass.java, ${sys}\ZyElLanguage.java"/>
+		<javac includeantruntime="false" srcdir="${dbg}" destdir = "${classes}" encoding="utf-8" includes="ZyElDbg.java, ${enums}\ZYELClass.java"/>
+	</target>
+	
+	<target name="run">
+		<java classname="zyel.dbg.ZyElDbg" fork="true">
+			<classpath path="${classes}"/>
+		</java>
+	</target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${classes}\zyel\dbg">
+				<include name="*.class"/>
+			</fileset>
+		</delete>
+		<delete>
+			<fileset dir="${classes}\zyel\enums">
+				<include name="*.class"/>
+			</fileset>
+		</delete>
+	</target>
+	
+</project>
